@@ -74,14 +74,10 @@ export const login = async (req, res, next)=>{
     try{
         existingUser = await User.findOneAndUpdate({_id: existingUser.id}, {refreshToken: refreshToken}, {new: true});
         //existingUser.save();
-        console.log(existingUser);
+        //console.log(existingUser);
     }catch(err){
         console.log(err);
     }
-    
-    
-
-    //il tutorial setta roba per fare il logout ma con roba strana
     res.cookie('jwt', refreshToken, {httpOnly: true, maxAge: 24*60*60*1000});
     return res.status(200).json({accessToken: accessToken});
 }

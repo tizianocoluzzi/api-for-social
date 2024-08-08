@@ -4,8 +4,10 @@ import router from "./routes/user-routes";
 import blogRouter from "./routes/blog-routes";
 import login from "./routes/login-routes";
 import signup from "./routes/signup-routes";
+import { handleRefreshToken } from './controllers/refreshToken-controller';
 import { verifyJWT } from './middleware/verifyJWT';
 import cookieParser from 'cookie-parser';
+import { handleLogout } from './controllers/logout-controller';
 
 const app = express();
 const port = 5000;
@@ -16,6 +18,8 @@ app.use(cookieParser()); //per i cookie
 //in teoria questo fa in modo che il login sia richiesto sempre tranne per le pagine di signup e di login
 app.use("/api/user", signup);
 app.use("/api/user", login);
+app.use("/api/refresh", handleRefreshToken);
+app.use("/api", handleLogout);
 app.use(verifyJWT);
 app.use("/api/user",router);
 app.use("/api/blog", blogRouter);

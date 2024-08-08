@@ -1,30 +1,32 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import User from "../model/User";
 dotenv.config();
 
 export const handleRefreshToken = async (req, res, next)=>{
-    const cookies = req.cookie;
+    const cookies = req.cookies;
     if(!cookies?.jwt) return res.status(401).json({message: "forbidden"});
     const refreshToken = cookies.jwt;
-    //TODO fare cio di cui sotto
-    //in teoria bisognerebbe avere un database aggiornato coi vavri refreshToken, step che andava fatto nel login e nel signup, 
-    //andava cioe aggiunto il primo refresh token, io non l'ho fatoo quindi adessso mi attacco abbastanza al cazzo 
     let existingUser;
+    //TODO quando aggiorno a list devo cambiare il modo in cui controllo il refresh Token
     try{
-        existingUser = await User.findOne({email});
+        existingUser = await User.findOne({refreshToken: refreshToken});
     } catch(err){
         return console.log(err);
     }
     if(!existingUser){
-        return res.status(400).json({message: "Couldn't Find User By This Email"});
+        return res.status(403).json({message: "Forbidden"});
     }
-    const isPasswordCorrect = bcrypt.compareSync(password, existingUser.password);
-    if(!isPasswordCorrect){
-        return res.status(400).json({message: "password is incorrect"});
-    }
-    //al momento utilizzo solo la mail nel sign perche la password è un dato sensibile
-    const accessToken = jwt.sign({"email":email}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: "30s"});
-    //il tutorial setta roba per fare il logout ma con roba strana
-    res.cookie('jwt', refreshToken, {httpOnly: true, maxAge: 24*60*60*1000});
-    return res.status(200).json({accessToken: accessToken});
+    jwt.verify(
+        refreshToken, 
+        process.env.REFRESH_TOKEN_SECRET,
+        (err, decoded)=>{
+            console.log(decoded);
+            console.log(existingUser);
+            if(err || existingUser.email !== decoded.email) return res.status(403).json({message: "forbidden 2"});
+            const accesToken = jwt.sign({"email": decoded.email}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '30s'});
+            res.status(200).json({accesToken});
+        }
+    )
+    
 }
