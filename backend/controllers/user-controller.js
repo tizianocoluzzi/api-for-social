@@ -2,9 +2,12 @@ import dotenv from 'dotenv';
 dotenv.config();
 import User from "../model/User";
 import bcrypt from 'bcryptjs';
+import cookieParser from 'cookie-parser';
 
 import jwt from 'jsonwebtoken';
+
 export const getAllUser = async(req, res, next) => {
+    console.log(jwt.decode(req.headers.cookie.split("=")[1]));
     let users;
     try{
         users= await User.find();//non c'è nessun filter quindi prende tutte le occorrenze
@@ -18,7 +21,7 @@ export const getAllUser = async(req, res, next) => {
 }
 
 export const signup = async (req, res, next)=>{
-    console.log(req);
+    //console.log(req);
     const {name, email, password} = req.body;
     
     let existingUser;
@@ -37,6 +40,7 @@ export const signup = async (req, res, next)=>{
         email, 
         password: hashedPassword,
         blogs : [],
+        refreshToken: "",
     });
     //si usa il try catch ogni volta che si interagisce col databases
     try{
@@ -48,7 +52,6 @@ export const signup = async (req, res, next)=>{
 }
 
 export const login = async (req, res, next)=>{
-    console.log(req.body);
     const {email, password } = req.body;
     let existingUser;
     try{
@@ -66,6 +69,18 @@ export const login = async (req, res, next)=>{
     //al momento utilizzo solo la mail nel sign perche la password è un dato sensibile
     const accessToken = jwt.sign({"email":email}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: "30s"});
     const refreshToken = jwt.sign({"email":email}, process.env.REFRESH_TOKEN_SECRET, {expiresIn: "5m"});
+    //inserisco il refreshToken nel database
+    //TODO modificare il db in modo da avere un array di refreshToken
+    try{
+        existingUser = await User.findOneAndUpdate({_id: existingUser.id}, {refreshToken: refreshToken}, {new: true});
+        //existingUser.save();
+        console.log(existingUser);
+    }catch(err){
+        console.log(err);
+    }
+    
+    
+
     //il tutorial setta roba per fare il logout ma con roba strana
     res.cookie('jwt', refreshToken, {httpOnly: true, maxAge: 24*60*60*1000});
     return res.status(200).json({accessToken: accessToken});

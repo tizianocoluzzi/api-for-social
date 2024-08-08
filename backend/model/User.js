@@ -19,6 +19,9 @@ const userSchema = new Schema({
         type: mongoose.Types.ObjectId,
         ref : "Blog",
         required: true,
-    }]
+    }],
+    refreshToken:{
+        type: String,
+    },
 });
 export default mongoose.model("User", userSchema);

@@ -12,7 +12,7 @@ const port = 5000;
 
 app.use(express.json()); //fa in modo che i dati siano tutti json
 
-app.use(cookieParser()); //per i coockie
+app.use(cookieParser()); //per i cookie
 //in teoria questo fa in modo che il login sia richiesto sempre tranne per le pagine di signup e di login
 app.use("/api/user", signup);
 app.use("/api/user", login);
