@@ -8,10 +8,14 @@ import { handleRefreshToken } from './controllers/refreshToken-controller';
 import { verifyJWT } from './middleware/verifyJWT';
 import cookieParser from 'cookie-parser';
 import { handleLogout } from './controllers/logout-controller';
-
+import {credentials} from './middleware/credentials';
+import {corsOptions} from './config/corsOptions';
+import cors from 'cors';
 const app = express();
 const port = 5000;
 
+app.use(credentials);
+app.use(cors(corsOptions));
 app.use(express.json()); //fa in modo che i dati siano tutti json
 
 app.use(cookieParser()); //per i cookie

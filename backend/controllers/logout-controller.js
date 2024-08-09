@@ -14,7 +14,7 @@ export const handleLogout = async (req, res, next)=>{
         return console.log(err);
     }
     if(!existingUser){
-        res.clearCookie('jwt', {httpOnly: true});
+        res.clearCookie('jwt', {httpOnly: true, sameSite: 'None', secure: true});
         return res.status(204).json({message: "No content"});
     }
     // Delete the refresh token
