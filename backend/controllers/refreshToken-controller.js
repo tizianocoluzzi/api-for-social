@@ -8,9 +8,8 @@ export const handleRefreshToken = async (req, res, next)=>{
     if(!cookies?.jwt) return res.status(401).json({message: "forbidden"});
     const refreshToken = cookies.jwt;
     let existingUser;
-    //TODO quando aggiorno a list devo cambiare il modo in cui controllo il refresh Token
     try{
-        existingUser = await User.findOne({refreshToken: refreshToken});
+        existingUser = await User.findOne({refreshToken: {"$in": refreshToken}});
     } catch(err){
         return console.log(err);
     }

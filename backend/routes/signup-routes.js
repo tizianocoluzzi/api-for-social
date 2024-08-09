@@ -6,5 +6,5 @@ import router from './user-routes';
 //router.post router.get ...
 
 
-router.post("/signup", signup);
+router.post("/", signup);
 export default router;

@@ -16,10 +16,10 @@ app.use(express.json()); //fa in modo che i dati siano tutti json
 
 app.use(cookieParser()); //per i cookie
 //in teoria questo fa in modo che il login sia richiesto sempre tranne per le pagine di signup e di login
-app.use("/api/user", signup);
-app.use("/api/user", login);
+app.use("/api/user/signup", signup);
+app.use("/api/user/login", login);
 app.use("/api/refresh", handleRefreshToken);
-app.use("/api", handleLogout);
+app.use("/api/logout", handleLogout);
 app.use(verifyJWT);
 app.use("/api/user",router);
 app.use("/api/blog", blogRouter);

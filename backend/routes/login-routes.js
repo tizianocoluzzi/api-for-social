@@ -5,5 +5,5 @@ import {login} from "../controllers/user-controller";
 //router.post router.get ...
 
 
-router.post("/login", login);
+router.post("/", login);
 export default router;

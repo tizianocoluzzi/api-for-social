@@ -7,7 +7,7 @@ import cookieParser from 'cookie-parser';
 import jwt from 'jsonwebtoken';
 
 export const getAllUser = async(req, res, next) => {
-    console.log(jwt.decode(req.headers.cookie.split("=")[1]));
+    //console.log(jwt.decode(req.headers.cookie.split("=")[1]));
     let users;
     try{
         users= await User.find();//non c'è nessun filter quindi prende tutte le occorrenze
@@ -40,7 +40,7 @@ export const signup = async (req, res, next)=>{
         email, 
         password: hashedPassword,
         blogs : [],
-        refreshToken: "",
+        refreshToken: [],
     });
     //si usa il try catch ogni volta che si interagisce col databases
     try{
@@ -70,9 +70,8 @@ export const login = async (req, res, next)=>{
     const accessToken = jwt.sign({"email":email}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: "30s"});
     const refreshToken = jwt.sign({"email":email}, process.env.REFRESH_TOKEN_SECRET, {expiresIn: "5m"});
     //inserisco il refreshToken nel database
-    //TODO modificare il db in modo da avere un array di refreshToken
     try{
-        existingUser = await User.findOneAndUpdate({_id: existingUser.id}, {refreshToken: refreshToken}, {new: true});
+        existingUser = await User.findOneAndUpdate({_id: existingUser.id}, {$push : {refreshToken: refreshToken}}, {new: true});
         //existingUser.save();
         //console.log(existingUser);
     }catch(err){

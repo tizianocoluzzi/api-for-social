@@ -20,8 +20,8 @@ const userSchema = new Schema({
         ref : "Blog",
         required: true,
     }],
-    refreshToken:{
+    refreshToken:[{
         type: String,
-    },
+    }],
 });
 export default mongoose.model("User", userSchema);
