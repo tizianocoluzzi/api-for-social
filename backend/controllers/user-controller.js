@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import User from "../model/User";
+import User from "../model/User.js";
 import bcrypt from 'bcryptjs';
 import cookieParser from 'cookie-parser';
 

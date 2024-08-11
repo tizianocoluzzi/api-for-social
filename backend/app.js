@@ -1,16 +1,17 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import router from "./routes/user-routes";
-import blogRouter from "./routes/blog-routes";
-import login from "./routes/login-routes";
-import signup from "./routes/signup-routes";
-import { handleRefreshToken } from './controllers/refreshToken-controller';
-import { verifyJWT } from './middleware/verifyJWT';
+import router from "./routes/user-routes.js";
+import blogRouter from "./routes/blog-routes.js";
+import login from "./routes/login-routes.js";
+import signup from "./routes/signup-routes.js";
+import { handleRefreshToken } from './controllers/refreshToken-controller.js';
+import { verifyJWT } from './middleware/verifyJWT.js';
 import cookieParser from 'cookie-parser';
-import { handleLogout } from './controllers/logout-controller';
-import {credentials} from './middleware/credentials';
-import {corsOptions} from './config/corsOptions';
+import { handleLogout } from './controllers/logout-controller.js';
+import {credentials} from './middleware/credentials.js';
+import {corsOptions} from './config/corsOptions.js';
 import cors from 'cors';
+import def from './routes/default.js'
 const app = express();
 const port = 5000;
 
@@ -20,6 +21,7 @@ app.use(express.json()); //fa in modo che i dati siano tutti json
 
 app.use(cookieParser()); //per i cookie
 //in teoria questo fa in modo che il login sia richiesto sempre tranne per le pagine di signup e di login
+app.use("/api/landing", def);
 app.use("/api/user/signup", signup);
 app.use("/api/user/login", login);
 app.use("/api/refresh", handleRefreshToken);

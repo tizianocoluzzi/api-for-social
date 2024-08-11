@@ -1,6 +1,6 @@
 import express from 'express';
-import { getAllBlogs, addBlog, updateBlog,getById, deleteBlog, getByUserId } from '../controllers/blog-controller';
-import {verifyJWT}  from '../middleware/verifyJWT';
+import { getAllBlogs, addBlog, updateBlog,getById, deleteBlog, getByUserId } from '../controllers/blog-controller.js';
+import {verifyJWT}  from '../middleware/verifyJWT.js';
 const blogRouter = express.Router();
 
 blogRouter.get("/", getAllBlogs);

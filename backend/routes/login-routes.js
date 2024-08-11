@@ -1,6 +1,6 @@
 import express from'express';
 const router = express.Router();
-import {login} from "../controllers/user-controller";
+import {login} from "../controllers/user-controller.js";
 
 //router.post router.get ...
 
