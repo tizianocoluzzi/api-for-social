@@ -1,0 +1,13 @@
+import { Link } from 'react-router-dom';
+import classes from './styles.module.css'
+export default function Header(){
+    return (<div className={classes.header}>
+        <h3>header</h3>
+        <ul>
+            <Link to={"/"}><li>home</li></Link>
+            <Link to={"/login"}><li>login</li></Link>
+            <Link to={"/add-blog"}><li>addBlog</li></Link>
+            
+        </ul>
+    </div>);
+}

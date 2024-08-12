@@ -1,0 +1,10 @@
+.wrapper{
+    display:flex;
+    flex-direction: column;
+}
+
+.formWrapper{
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+}

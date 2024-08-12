@@ -1,0 +1,22 @@
+.wrapper{
+    display: flex;
+    flex:1;
+    flex-direction: row;
+    padding: 3px;
+    margin: 10px;
+}
+.wrapperBlog{
+    display: flex;
+    flex-direction: column;
+    border-style: solid;
+    border-radius: 2%;
+    border-width: 1px;
+    margin: 10px;
+}
+.wrapperBlog p{
+    border-bottom-color: red;
+    border-bottom-style: solid;
+    font-weight: bold;
+    text-align: center;
+    justify-content: center;
+}
